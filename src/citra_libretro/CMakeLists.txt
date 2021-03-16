@@ -1,6 +1,6 @@
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/CMakeModules)
 
-add_library(citra_libretro SHARED
+add_library(citra2018_libretro SHARED
         emu_window/libretro_window.cpp
         emu_window/libretro_window.h
         input/input_factory.cpp
@@ -16,13 +16,13 @@ add_library(citra_libretro SHARED
         libretro_logger.cpp
         libretro_logger.h)
 
-create_target_directory_groups(citra_libretro)
+create_target_directory_groups(citra2018_libretro)
 
-target_link_libraries(citra_libretro PRIVATE common core)
-target_link_libraries(citra_libretro PRIVATE glad libretro)
-target_link_libraries(citra_libretro PRIVATE ${PLATFORM_LIBRARIES} Threads::Threads)
+target_link_libraries(citra2018_libretro PRIVATE common core)
+target_link_libraries(citra2018_libretro PRIVATE glad libretro)
+target_link_libraries(citra2018_libretro PRIVATE ${PLATFORM_LIBRARIES} Threads::Threads)
 if(DEFINED LIBRETRO_STATIC)
-target_link_libraries(citra_libretro PRIVATE -static-libstdc++)
+target_link_libraries(citra2018_libretro PRIVATE -static-libstdc++)
 endif()
 
-set_target_properties(citra_libretro PROPERTIES PREFIX "")
+set_target_properties(citra2018_libretro PROPERTIES PREFIX "")
