@@ -7,7 +7,7 @@
 # Core definitions
 .core-defs:
   variables:
-    CORENAME: citra
+    CORENAME: citra2018
     EXTRA_PATH: src/citra_libretro
     CORE_ARGS: -DENABLE_LIBRETRO=1 -DENABLE_SDL2=0 -DENABLE_QT=0 -DENABLE_WEB_SERVICE=0
     
