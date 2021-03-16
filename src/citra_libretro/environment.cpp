@@ -128,7 +128,7 @@ int16_t CheckInput(unsigned port, unsigned device, unsigned index, unsigned id) 
 
 void retro_get_system_info(struct retro_system_info* info) {
     memset(info, 0, sizeof(*info));
-    info->library_name = "Citra";
+    info->library_name = "Citra2018";
     info->library_version = Common::g_scm_desc;
     info->need_fullpath = true;
     info->valid_extensions = "3ds|3dsx|cia|elf";
