@@ -31,6 +31,8 @@
 #include "video_core/renderer_opengl/renderer_opengl.h"
 #include "video_core/video_core.h"
 
+#define CORENAME "citra2018"
+
 class CitraLibRetro {
 public:
     CitraLibRetro() : log_filter(Log::Level::Info) {}
@@ -87,28 +89,28 @@ unsigned retro_api_version() {
 
 void LibRetro::OnConfigureEnvironment() {
     static const retro_variable values[] = {
-        {"citra_use_cpu_jit", "Enable CPU JIT; enabled|disabled"},
-        {"citra_use_hw_renderer", "Enable hardware renderer; enabled|disabled"},
-        {"citra_use_shader_jit", "Enable shader JIT; enabled|disabled"},
-        {"citra_use_hw_shaders", "Enable hardware shaders; enabled|disabled"},
-        {"citra_use_acc_geo_shaders", "Enable accurate geometry shaders (only for H/W shaders); enabled|disabled"},
-        {"citra_use_acc_mul", "Enable accurate shaders multiplication (only for H/W shaders); enabled|disabled"},
-        {"citra_resolution_factor",
+        {CORENAME "_use_cpu_jit", "Enable CPU JIT; enabled|disabled"},
+        {CORENAME "_use_hw_renderer", "Enable hardware renderer; enabled|disabled"},
+        {CORENAME "_use_shader_jit", "Enable shader JIT; enabled|disabled"},
+        {CORENAME "_use_hw_shaders", "Enable hardware shaders; enabled|disabled"},
+        {CORENAME "_use_acc_geo_shaders", "Enable accurate geometry shaders (only for H/W shaders); enabled|disabled"},
+        {CORENAME "_use_acc_mul", "Enable accurate shaders multiplication (only for H/W shaders); enabled|disabled"},
+        {CORENAME "_resolution_factor",
          "Resolution scale factor; 1x (Native)|2x|3x|4x|5x|6x|7x|8x|9x|10x"},
-        {"citra_layout_option", "Screen layout positioning; Default Top-Bottom Screen|Single "
+        {CORENAME "_layout_option", "Screen layout positioning; Default Top-Bottom Screen|Single "
                                 "Screen Only|Large Screen, Small Screen|Side by Side"},
-        {"citra_swap_screen", "Prominent 3DS screen; Top|Bottom"},
-        {"citra_analog_function",
+        {CORENAME "_swap_screen", "Prominent 3DS screen; Top|Bottom"},
+        {CORENAME "_analog_function",
          "Right analog function; C-Stick and Touchscreen Pointer|Touchscreen Pointer|C-Stick"},
-        {"citra_deadzone", "Emulated pointer deadzone (%); 15|20|25|30|35|0|5|10"},
-        {"citra_mouse_touchscreen", "Enable mouse input for touchscreen; enabled|disabled"},
-        {"citra_mouse_show_pointer", "Show mouse pointer for touchscreen; enabled|disabled"},
-        {"citra_use_virtual_sd", "Enable virtual SD card; enabled|disabled"},
-        {"citra_use_libretro_save_path", "Savegame location; LibRetro Default|Citra Default"},
-        {"citra_is_new_3ds", "3DS system model; Old 3DS|New 3DS"},
-        {"citra_region_value",
+        {CORENAME "_deadzone", "Emulated pointer deadzone (%); 15|20|25|30|35|0|5|10"},
+        {CORENAME "_mouse_touchscreen", "Enable mouse input for touchscreen; enabled|disabled"},
+        {CORENAME "_mouse_show_pointer", "Show mouse pointer for touchscreen; enabled|disabled"},
+        {CORENAME "_use_virtual_sd", "Enable virtual SD card; enabled|disabled"},
+        {CORENAME "_use_libretro_save_path", "Savegame location; LibRetro Default|Citra Default"},
+        {CORENAME "_is_new_3ds", "3DS system model; Old 3DS|New 3DS"},
+        {CORENAME "_region_value",
          "3DS system region; Auto|Japan|USA|Europe|Australia|China|Korea|Taiwan"},
-        {"citra_use_gdbstub", "Enable GDB stub; disabled|enabled"},
+        {CORENAME "_use_gdbstub", "Enable GDB stub; disabled|enabled"},
         {nullptr, nullptr}};
 
     LibRetro::SetVariables(values);
