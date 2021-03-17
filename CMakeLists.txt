@@ -33,19 +33,6 @@ function(check_submodules_present)
 endfunction()
 check_submodules_present()
 
-configure_file(${CMAKE_SOURCE_DIR}/dist/compatibility_list/compatibility_list.qrc
-               ${CMAKE_BINARY_DIR}/dist/compatibility_list/compatibility_list.qrc
-               COPYONLY)
-if (ENABLE_COMPATIBILITY_LIST_DOWNLOAD AND NOT EXISTS ${CMAKE_BINARY_DIR}/dist/compatibility_list/compatibility_list.json)
-    message(STATUS "Downloading compatibility list for citra...")
-    file(DOWNLOAD
-        https://api.citra-emu.org/gamedb/
-        "${CMAKE_BINARY_DIR}/dist/compatibility_list/compatibility_list.json" SHOW_PROGRESS)
-endif()
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/dist/compatibility_list/compatibility_list.json)
-    file(WRITE ${CMAKE_BINARY_DIR}/dist/compatibility_list/compatibility_list.json "")
-endif()
-
 # Detect current compilation architecture and create standard definitions
 # =======================================================================
 
@@ -185,10 +172,6 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-if (CITRA_ENABLE_COMPATIBILITY_REPORTING)
-    add_definitions(-DCITRA_ENABLE_COMPATIBILITY_REPORTING)
-endif()
-
 if (ENABLE_SCRIPTING)
     add_definitions(-DENABLE_SCRIPTING)
 endif()
@@ -316,8 +299,6 @@ get_timestamp(BUILD_DATE)
 enable_testing()
 add_subdirectory(externals)
 add_subdirectory(src)
-add_subdirectory(dist/installer)
-
 
 # Set citra-qt project or citra project as default StartUp Project in Visual Studio depending on whether QT is enabled or not
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT citra2018)
