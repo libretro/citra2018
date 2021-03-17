@@ -165,8 +165,6 @@ void UpdateSettings() {
 
     // We don't need these, as this is the frontend's responsibility.
     Settings::values.enable_audio_stretching = false;
-    Settings::values.use_frame_limit = false;
-    Settings::values.frame_limit = 100;
 
     // For our other settings, import them from LibRetro.
     Settings::values.use_cpu_jit =

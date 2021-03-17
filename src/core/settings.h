@@ -124,8 +124,6 @@ struct Values {
     bool use_shader_jit;
     u16 resolution_factor;
     bool use_vsync;
-    bool use_frame_limit;
-    u16 frame_limit;
 
     LayoutOption layout_option;
     bool swap_screen;

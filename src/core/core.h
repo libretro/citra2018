@@ -150,7 +150,6 @@ public:
     const Service::SM::ServiceManager& ServiceManager() const;
 
     PerfStats perf_stats;
-    FrameLimiter frame_limiter;
 
     void SetStatus(ResultStatus new_status, const char* details = nullptr) {
         status = new_status;

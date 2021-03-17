@@ -64,20 +64,4 @@ private:
     Clock::duration previous_frame_length = Clock::duration::zero();
 };
 
-class FrameLimiter {
-public:
-    using Clock = std::chrono::high_resolution_clock;
-
-    void DoFrameLimiting(std::chrono::microseconds current_system_time_us);
-
-private:
-    /// Emulated system time (in microseconds) at the last limiter invocation
-    std::chrono::microseconds previous_system_time_us{0};
-    /// Walltime at the last limiter invocation
-    Clock::time_point previous_walltime = Clock::now();
-
-    /// Accumulated difference between walltime and emulated time
-    std::chrono::microseconds frame_limiting_delta_err{0};
-};
-
 } // namespace Core

@@ -56,8 +56,6 @@ void LogSettings() {
     LogSetting("Renderer_UseShaderJit", Settings::values.use_shader_jit);
     LogSetting("Renderer_UseResolutionFactor", Settings::values.resolution_factor);
     LogSetting("Renderer_UseVsync", Settings::values.use_vsync);
-    LogSetting("Renderer_UseFrameLimit", Settings::values.use_frame_limit);
-    LogSetting("Renderer_FrameLimit", Settings::values.frame_limit);
     LogSetting("Layout_Toggle3d", Settings::values.toggle_3d);
     LogSetting("Layout_Factor3d", Settings::values.factor_3d);
     LogSetting("Layout_LayoutOption", static_cast<int>(Settings::values.layout_option));
