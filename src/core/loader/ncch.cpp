@@ -168,8 +168,6 @@ ResultStatus AppLoader_NCCH::Load(Kernel::SharedPtr<Kernel::Process>& process) {
         overlay_ncch = &update_ncch;
     }
 
-    Core::Telemetry().AddField(Telemetry::FieldType::Session, "ProgramId", program_id);
-
     if (auto room_member = Network::GetRoomMember().lock()) {
         Network::GameInfo game_info;
         ReadTitle(game_info.name);

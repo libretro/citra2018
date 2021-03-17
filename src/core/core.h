@@ -12,7 +12,6 @@
 #include "core/loader/loader.h"
 #include "core/memory.h"
 #include "core/perf_stats.h"
-#include "core/telemetry_session.h"
 
 class EmuWindow;
 class ARM_Interface;
@@ -117,14 +116,6 @@ public:
         return cpu_core != nullptr;
     }
 
-    /**
-     * Returns a reference to the telemetry session for this emulation session.
-     * @returns Reference to the telemetry session.
-     */
-    Core::TelemetrySession& TelemetrySession() const {
-        return *telemetry_session;
-    }
-
     /// Prepare the core emulation for a reschedule
     void PrepareReschedule();
 
@@ -213,9 +204,6 @@ private:
     /// When true, signals that a reschedule should happen
     bool reschedule_pending{};
 
-    /// Telemetry session for this emulation session
-    std::unique_ptr<Core::TelemetrySession> telemetry_session;
-
     /// Service manager
     std::shared_ptr<Service::SM::ServiceManager> service_manager;
 
@@ -248,10 +236,6 @@ inline ARM_Interface& CPU() {
 
 inline AudioCore::DspInterface& DSP() {
     return System::GetInstance().DSP();
-}
-
-inline TelemetrySession& Telemetry() {
-    return System::GetInstance().TelemetrySession();
 }
 
 } // namespace Core

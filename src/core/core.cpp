@@ -182,8 +182,6 @@ System::ResultStatus System::Init(EmuWindow& emu_window, u32 system_mode) {
     dsp_core = std::make_unique<AudioCore::DspHle>();
     dsp_core->SetSink(Settings::values.sink_id, Settings::values.audio_device_id);
 
-    telemetry_session = std::make_unique<Core::TelemetrySession>();
-
 #ifdef ENABLE_SCRIPTING
     rpc_server = std::make_unique<RPC::RPCServer>();
 #endif
@@ -225,12 +223,6 @@ void System::RegisterSoftwareKeyboard(std::shared_ptr<Frontend::SoftwareKeyboard
 void System::Shutdown() {
     // Log last frame performance stats
     auto perf_results = GetAndResetPerfStats();
-    Telemetry().AddField(Telemetry::FieldType::Performance, "Shutdown_EmulationSpeed",
-                         perf_results.emulation_speed * 100.0);
-    Telemetry().AddField(Telemetry::FieldType::Performance, "Shutdown_Framerate",
-                         perf_results.game_fps);
-    Telemetry().AddField(Telemetry::FieldType::Performance, "Shutdown_Frametime",
-                         perf_results.frametime * 1000.0);
 
     // Shutdown emulation session
     GDBStub::Shutdown();
@@ -238,7 +230,6 @@ void System::Shutdown() {
     Service::Shutdown();
     Kernel::Shutdown();
     HW::Shutdown();
-    telemetry_session.reset();
 #ifdef ENABLE_SCRIPTING
     rpc_server.reset();
 #endif
