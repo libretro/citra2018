@@ -118,8 +118,6 @@ public:
     /// Prepare the core emulation for a reschedule
     void PrepareReschedule();
 
-    PerfStats::Results GetAndResetPerfStats();
-
     /**
      * Gets a reference to the emulated CPU.
      * @returns A reference to the emulated CPU.
