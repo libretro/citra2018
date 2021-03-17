@@ -11,7 +11,6 @@
 #include "core/hle/shared_page.h"
 #include "core/loader/loader.h"
 #include "core/memory.h"
-#include "core/perf_stats.h"
 
 class EmuWindow;
 class ARM_Interface;
@@ -148,8 +147,6 @@ public:
      * @returns A const reference to the service manager.
      */
     const Service::SM::ServiceManager& ServiceManager() const;
-
-    PerfStats perf_stats;
 
     void SetStatus(ResultStatus new_status, const char* details = nullptr) {
         status = new_status;

@@ -286,10 +286,6 @@ ResultCode SetBufferSwap(u32 screen_id, const FrameBufferInfo& info) {
     if (Pica::g_debug_context)
         Pica::g_debug_context->OnEvent(Pica::DebugContext::Event::BufferSwapped, nullptr);
 
-    if (screen_id == 0) {
-        Core::System::GetInstance().perf_stats.EndGameFrame();
-    }
-
     return RESULT_SUCCESS;
 }
 

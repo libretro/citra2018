@@ -408,8 +408,6 @@ add_library(core STATIC
     mmio.h
     movie.cpp
     movie.h
-    perf_stats.cpp
-    perf_stats.h
     settings.cpp
     settings.h
     tracer/citrace.h

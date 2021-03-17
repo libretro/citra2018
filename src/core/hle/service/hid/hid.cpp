@@ -219,8 +219,7 @@ void Module::UpdateGyroscopeCallback(u64 userdata, s64 cycles_late) {
 
     Math::Vec3<float> gyro;
     std::tie(std::ignore, gyro) = motion_device->GetStatus();
-    double stretch = Core::System::GetInstance().perf_stats.GetLastFrameTimeScale();
-    gyro *= gyroscope_coef * static_cast<float>(stretch);
+    gyro *= gyroscope_coef * 1.00;
     gyroscope_entry.x = static_cast<s16>(gyro.x);
     gyroscope_entry.y = static_cast<s16>(gyro.y);
     gyroscope_entry.z = static_cast<s16>(gyro.z);

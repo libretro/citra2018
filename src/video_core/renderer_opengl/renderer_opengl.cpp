@@ -142,13 +142,9 @@ void RendererOpenGL::SwapBuffers() {
 
     DrawScreens();
 
-    Core::System::GetInstance().perf_stats.EndSystemFrame();
-
     // Swap buffers
     render_window.PollEvents();
     render_window.SwapBuffers();
-
-    Core::System::GetInstance().perf_stats.BeginSystemFrame();
 
     prev_state.Apply();
     RefreshRasterizerSetting();
