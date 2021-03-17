@@ -2,7 +2,6 @@
 cmake_minimum_required(VERSION 3.8)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/externals/cmake-modules")
-include(DownloadExternals)
 include(CMakeDependentOption)
 
 project(citra2018)
@@ -10,12 +9,6 @@ project(citra2018)
 option(ENABLE_SCRIPTING "Enables scripting support" OFF)
 
 option(DISABLE_CLANG_TARGET "Disables the Clang format check" ON)
-
-if(NOT EXISTS ${CMAKE_SOURCE_DIR}/.git/hooks/pre-commit)
-    message(STATUS "Copying pre-commit hook")
-    file(COPY hooks/pre-commit
-        DESTINATION ${CMAKE_SOURCE_DIR}/.git/hooks)
-endif()
 
 # Sanity check : Check that all submodules are present
 # =======================================================================
