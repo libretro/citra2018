@@ -9,7 +9,6 @@
   variables:
     CORENAME: citra2018
     EXTRA_PATH: src/citra_libretro
-    CORE_ARGS: 
     
 variables:
   GIT_SUBMODULE_STRATEGY: normal
