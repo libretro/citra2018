@@ -68,9 +68,6 @@ add_library(common STATIC
     math_util.h
     memory_util.cpp
     memory_util.h
-    microprofile.cpp
-    microprofile.h
-    microprofileui.h
     misc.cpp
     param_package.cpp
     param_package.h
@@ -104,7 +101,7 @@ endif()
 
 create_target_directory_groups(common)
 
-target_link_libraries(common PUBLIC Boost::boost fmt microprofile)
+target_link_libraries(common PUBLIC Boost::boost fmt)
 if (ARCHITECTURE_x86_64)
     target_link_libraries(common PRIVATE xbyak)
 endif()

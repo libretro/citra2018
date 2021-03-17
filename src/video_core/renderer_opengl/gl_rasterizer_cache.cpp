@@ -19,7 +19,6 @@
 #include "common/color.h"
 #include "common/logging/log.h"
 #include "common/math_util.h"
-#include "common/microprofile.h"
 #include "common/scope_exit.h"
 #include "common/vector_math.h"
 #include "core/frontend/emu_window.h"
@@ -623,7 +622,6 @@ void RasterizerCacheOpenGL::CopySurface(const Surface& src_surface, const Surfac
     UNREACHABLE();
 }
 
-MICROPROFILE_DEFINE(OpenGL_SurfaceLoad, "OpenGL", "Surface Load", MP_RGB(128, 64, 192));
 void CachedSurface::LoadGLBuffer(PAddr load_start, PAddr load_end) {
     ASSERT(type != SurfaceType::Fill);
 
@@ -642,8 +640,6 @@ void CachedSurface::LoadGLBuffer(PAddr load_start, PAddr load_end) {
 
     if (load_start < Memory::VRAM_VADDR && load_end > Memory::VRAM_VADDR)
         load_start = Memory::VRAM_VADDR;
-
-    MICROPROFILE_SCOPE(OpenGL_SurfaceLoad);
 
     ASSERT(load_start >= addr && load_end <= end);
     const u32 start_offset = load_start - addr;
@@ -680,7 +676,6 @@ void CachedSurface::LoadGLBuffer(PAddr load_start, PAddr load_end) {
     }
 }
 
-MICROPROFILE_DEFINE(OpenGL_SurfaceFlush, "OpenGL", "Surface Flush", MP_RGB(128, 192, 64));
 void CachedSurface::FlushGLBuffer(PAddr flush_start, PAddr flush_end) {
     u8* const dst_buffer = Memory::GetPhysicalPointer(addr);
     if (dst_buffer == nullptr)
@@ -695,8 +690,6 @@ void CachedSurface::FlushGLBuffer(PAddr flush_start, PAddr flush_end) {
 
     if (flush_start < Memory::VRAM_VADDR && flush_end > Memory::VRAM_VADDR)
         flush_start = Memory::VRAM_VADDR;
-
-    MICROPROFILE_SCOPE(OpenGL_SurfaceFlush);
 
     ASSERT(flush_start >= addr && flush_end <= end);
     const u32 start_offset = flush_start - addr;
@@ -725,13 +718,10 @@ void CachedSurface::FlushGLBuffer(PAddr flush_start, PAddr flush_end) {
     }
 }
 
-MICROPROFILE_DEFINE(OpenGL_TextureUL, "OpenGL", "Texture Upload", MP_RGB(128, 64, 192));
 void CachedSurface::UploadGLTexture(const MathUtil::Rectangle<u32>& rect, GLuint read_fb_handle,
                                     GLuint draw_fb_handle) {
     if (type == SurfaceType::Fill)
         return;
-
-    MICROPROFILE_SCOPE(OpenGL_TextureUL);
 
     ASSERT(gl_buffer_size == width * height * GetGLBytesPerPixel(pixel_format));
 
@@ -789,13 +779,10 @@ void CachedSurface::UploadGLTexture(const MathUtil::Rectangle<u32>& rect, GLuint
     InvalidateAllWatcher();
 }
 
-MICROPROFILE_DEFINE(OpenGL_TextureDL, "OpenGL", "Texture Download", MP_RGB(128, 192, 64));
 void CachedSurface::DownloadGLTexture(const MathUtil::Rectangle<u32>& rect, GLuint read_fb_handle,
                                       GLuint draw_fb_handle) {
     if (type == SurfaceType::Fill)
         return;
-
-    MICROPROFILE_SCOPE(OpenGL_TextureDL);
 
     if (gl_buffer == nullptr) {
         gl_buffer_size = width * height * GetGLBytesPerPixel(pixel_format);
