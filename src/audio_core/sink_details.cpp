@@ -8,30 +8,14 @@
 #include <vector>
 #include "audio_core/null_sink.h"
 #include "audio_core/sink_details.h"
-#ifdef HAVE_SDL2
-#include "audio_core/sdl2_sink.h"
-#endif
-#ifdef HAVE_LIBRETRO
 #include "audio_core/libretro_sink.h"
-#endif
-#ifdef HAVE_CUBEB
-#include "audio_core/cubeb_sink.h"
-#endif
 #include "common/logging/log.h"
 
 namespace AudioCore {
 
 // g_sink_details is ordered in terms of desirability, with the best choice at the top.
 const std::vector<SinkDetails> g_sink_details = {
-#ifdef HAVE_LIBRETRO
     SinkDetails{"libretro", &std::make_unique<LibRetroSink, std::string>, &ListLibretroSinkDevices, true},
-#endif
-#ifdef HAVE_CUBEB
-    SinkDetails{"cubeb", &std::make_unique<CubebSink, std::string>, &ListCubebSinkDevices, false},
-#endif
-#ifdef HAVE_SDL2
-    SinkDetails{"sdl2", &std::make_unique<SDL2Sink, std::string>, &ListSDL2SinkDevices, false},
-#endif
     SinkDetails{"null", &std::make_unique<NullSink, std::string>,
                 [] { return std::vector<std::string>{"null"}; }, false},
 };

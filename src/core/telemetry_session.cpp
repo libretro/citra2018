@@ -15,11 +15,6 @@
 #include "core/settings.h"
 #include "core/telemetry_session.h"
 
-#ifdef ENABLE_WEB_SERVICE
-#include "web_service/telemetry_json.h"
-#include "web_service/verify_login.h"
-#endif
-
 namespace Core {
 
 #ifdef ARCHITECTURE_x86_64
@@ -83,29 +78,14 @@ u64 RegenerateTelemetryId() {
 }
 
 std::future<bool> VerifyLogin(std::string username, std::string token, std::function<void()> func) {
-#ifdef ENABLE_WEB_SERVICE
-    return WebService::VerifyLogin(username, token, Settings::values.web_api_url + "/profile",
-                                   func);
-#else
     return std::async(std::launch::async, [func{std::move(func)}]() {
         func();
         return false;
     });
-#endif
 }
 
 TelemetrySession::TelemetrySession() {
-#ifdef ENABLE_WEB_SERVICE
-    if (Settings::values.enable_telemetry) {
-        backend = std::make_unique<WebService::TelemetryJson>(
-            Settings::values.web_api_url + "/telemetry", Settings::values.citra_username,
-            Settings::values.citra_token);
-    } else {
-        backend = std::make_unique<Telemetry::NullVisitor>();
-    }
-#else
     backend = std::make_unique<Telemetry::NullVisitor>();
-#endif
     // Log one-time top-level information
     AddField(Telemetry::FieldType::None, "TelemetryId", GetTelemetryId());
 

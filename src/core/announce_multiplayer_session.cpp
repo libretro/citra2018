@@ -10,23 +10,13 @@
 #include "core/settings.h"
 #include "network/network.h"
 
-#ifdef ENABLE_WEB_SERVICE
-#include "web_service/announce_room_json.h"
-#endif
-
 namespace Core {
 
 // Time between room is announced to web_service
 static constexpr std::chrono::seconds announce_time_interval(15);
 
 AnnounceMultiplayerSession::AnnounceMultiplayerSession() {
-#ifdef ENABLE_WEB_SERVICE
-    backend = std::make_unique<WebService::RoomJson>(Settings::values.web_api_url + "/lobby",
-                                                     Settings::values.citra_username,
-                                                     Settings::values.citra_token);
-#else
     backend = std::make_unique<AnnounceMultiplayerRoom::NullBackend>();
-#endif
 }
 
 void AnnounceMultiplayerSession::Start() {

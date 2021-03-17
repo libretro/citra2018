@@ -7,21 +7,6 @@ include(CMakeDependentOption)
 
 project(citra2018)
 
-# Set bundled sdl2/qt as dependent options.
-# OFF by default, but if ENABLE_SDL2 and MSVC are true then ON
-option(ENABLE_SDL2 "Enable the SDL2 frontend" ON)
-CMAKE_DEPENDENT_OPTION(CITRA_USE_BUNDLED_SDL2 "Download bundled SDL2 binaries" ON "ENABLE_SDL2;MSVC" OFF)
-
-option(ENABLE_QT "Enable the Qt frontend" ON)
-option(ENABLE_QT_TRANSLATION "Enable translations for the Qt frontend" OFF)
-CMAKE_DEPENDENT_OPTION(CITRA_USE_BUNDLED_QT "Download bundled Qt binaries" ON "ENABLE_QT;MSVC" OFF)
-
-option(ENABLE_LIBRETRO "Enable the LibRetro frontend" OFF)
-
-option(ENABLE_WEB_SERVICE "Enable web services (telemetry, etc.)" ON)
-
-option(ENABLE_CUBEB "Enables the cubeb audio backend" OFF)
-
 option(USE_DISCORD_PRESENCE "Enables Discord Rich Presence" OFF)
 
 option(ENABLE_SCRIPTING "Enables scripting support" OFF)
@@ -124,7 +109,6 @@ if (NOT MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -gdwarf")
 
         if (MINGW_STATIC_BUILD)
-            add_definitions(-DQT_STATICPLUGIN)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
             set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
         endif()
@@ -203,66 +187,6 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-if (ENABLE_SDL2)
-    if (CITRA_USE_BUNDLED_SDL2)
-        # Detect toolchain and platform
-        if ((MSVC_VERSION GREATER_EQUAL 1910 AND MSVC_VERSION LESS 1920) AND ARCHITECTURE_x86_64)
-            set(SDL2_VER "SDL2-2.0.8")
-        else()
-            message(FATAL_ERROR "No bundled SDL2 binaries for your toolchain. Disable CITRA_USE_BUNDLED_SDL2 and provide your own.")
-        endif()
-
-        if (DEFINED SDL2_VER)
-            download_bundled_external("sdl2/" ${SDL2_VER} SDL2_PREFIX)
-        endif()
-
-        set(SDL2_FOUND YES)
-        set(SDL2_INCLUDE_DIR "${SDL2_PREFIX}/include" CACHE PATH "Path to SDL2 headers")
-        set(SDL2_LIBRARY "${SDL2_PREFIX}/lib/x64/SDL2.lib" CACHE PATH "Path to SDL2 library")
-        set(SDL2_DLL_DIR "${SDL2_PREFIX}/lib/x64/" CACHE PATH "Path to SDL2.dll")
-    else()
-        find_package(SDL2 REQUIRED)
-    endif()
-
-    if (SDL2_FOUND)
-        # TODO(yuriks): Make FindSDL2.cmake export an IMPORTED library instead
-        add_library(SDL2 INTERFACE)
-        target_link_libraries(SDL2 INTERFACE "${SDL2_LIBRARY}")
-        target_include_directories(SDL2 INTERFACE "${SDL2_INCLUDE_DIR}")
-    endif()
-else()
-    set(SDL2_FOUND NO)
-endif()
-
-if (ENABLE_QT)
-    if (CITRA_USE_BUNDLED_QT)
-        if ((MSVC_VERSION GREATER_EQUAL 1910 AND MSVC_VERSION LESS 1920) AND ARCHITECTURE_x86_64)
-            set(QT_VER qt-5.10.0-msvc2017_64)
-        else()
-            message(FATAL_ERROR "No bundled Qt binaries for your toolchain. Disable CITRA_USE_BUNDLED_QT and provide your own.")
-        endif()
-
-        if (DEFINED QT_VER)
-            download_bundled_external("qt/" ${QT_VER} QT_PREFIX)
-        endif()
-
-        set(QT_PREFIX_HINT HINTS "${QT_PREFIX}")
-    else()
-        # Passing an empty HINTS seems to cause default system paths to get ignored in CMake 2.8 so
-        # make sure to not pass anything if we don't have one.
-        set(QT_PREFIX_HINT)
-    endif()
-
-    find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Multimedia ${QT_PREFIX_HINT})
-
-    if (ENABLE_QT_TRANSLATION)
-        find_package(Qt5 REQUIRED COMPONENTS LinguistTools ${QT_PREFIX_HINT})
-    endif()
-endif()
-
-if (ENABLE_WEB_SERVICE)
-    add_definitions(-DENABLE_WEB_SERVICE)
-endif()
 if (CITRA_ENABLE_COMPATIBILITY_REPORTING)
     add_definitions(-DCITRA_ENABLE_COMPATIBILITY_REPORTING)
 endif()
@@ -398,36 +322,4 @@ add_subdirectory(dist/installer)
 
 
 # Set citra-qt project or citra project as default StartUp Project in Visual Studio depending on whether QT is enabled or not
-if(ENABLE_QT)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT citra2018-qt)
-else()
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT citra2018)
-endif()
-
-# Installation instructions
-# =========================
-
-# Install freedesktop.org metadata files, following those specifications:
-# http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
-# http://standards.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
-# http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
-if(ENABLE_QT AND UNIX AND NOT APPLE)
-    install(FILES "${CMAKE_SOURCE_DIR}/dist/citra.desktop"
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications")
-    install(FILES "${CMAKE_SOURCE_DIR}/dist/citra.svg"
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps")
-    install(FILES "${CMAKE_SOURCE_DIR}/dist/citra.xml"
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/share/mime/packages")
-endif()
-
-if(UNIX)
-    if(ENABLE_SDL2)
-        install(FILES "${CMAKE_SOURCE_DIR}/dist/citra.6"
-                DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man6")
-    endif()
-
-    if (ENABLE_QT)
-        install(FILES "${CMAKE_SOURCE_DIR}/dist/citra-qt.6"
-                DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man6")
-    endif()
-endif()
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT citra2018)

@@ -10,19 +10,12 @@
 #include "input_common/main.h"
 #include "input_common/motion_emu.h"
 #include "input_common/udp/udp.h"
-#ifdef HAVE_SDL2
-#include "input_common/sdl/sdl.h"
-#endif
 
 namespace InputCommon {
 
 static std::shared_ptr<Keyboard> keyboard;
 static std::shared_ptr<MotionEmu> motion_emu;
 static std::unique_ptr<CemuhookUDP::State> udp;
-
-#ifdef HAVE_SDL2
-static std::thread poll_thread;
-#endif
 
 void Init() {
     keyboard = std::make_shared<Keyboard>();
@@ -32,17 +25,10 @@ void Init() {
     motion_emu = std::make_shared<MotionEmu>();
     Input::RegisterFactory<Input::MotionDevice>("motion_emu", motion_emu);
 
-#ifdef HAVE_SDL2
-    SDL::Init();
-#endif
-
     udp = CemuhookUDP::Init();
 }
 
 void StartJoystickEventHandler() {
-#ifdef HAVE_SDL2
-    poll_thread = std::thread(SDL::PollLoop);
-#endif
 }
 
 void Shutdown() {
@@ -52,10 +38,6 @@ void Shutdown() {
     Input::UnregisterFactory<Input::MotionDevice>("motion_emu");
     motion_emu.reset();
 
-#ifdef HAVE_SDL2
-    SDL::Shutdown();
-    poll_thread.join();
-#endif
 }
 
 Keyboard* GetKeyboard() {
@@ -97,10 +79,6 @@ namespace Polling {
 
 std::vector<std::unique_ptr<DevicePoller>> GetPollers(DeviceType type) {
     std::vector<std::unique_ptr<DevicePoller>> pollers;
-
-#ifdef HAVE_SDL2
-    SDL::Polling::GetPollers(type, pollers);
-#endif
 
     return pollers;
 }

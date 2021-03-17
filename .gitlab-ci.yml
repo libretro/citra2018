@@ -9,21 +9,18 @@
   variables:
     CORENAME: citra2018
     EXTRA_PATH: src/citra_libretro
-    CORE_ARGS: -DENABLE_LIBRETRO=1 -DENABLE_SDL2=0 -DENABLE_QT=0 -DENABLE_WEB_SERVICE=0
+    CORE_ARGS: 
     
 variables:
   GIT_SUBMODULE_STRATEGY: normal
 
 .core-linux-defs:
   extends: .core-defs
-  variables:
-    CORE_ARGS: -DENABLE_LIBRETRO=1 -DLIBRETRO_STATIC=1 -DENABLE_SDL2=0 -DENABLE_QT=0 -DENABLE_WEB_SERVICE=0
 
 .core-windows-defs:
   extends: .core-defs
   variables:
     EXTRA_PATH: bin\Release
-    CORE_ARGS: -DENABLE_LIBRETRO=1 -DLIBRETRO_STATIC=1 -DENABLE_SDL2=0 -DENABLE_QT=0 -DENABLE_WEB_SERVICE=0
 
 # Inclusion templates, required for the build to work
 include:

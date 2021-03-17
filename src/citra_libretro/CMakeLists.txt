@@ -21,8 +21,6 @@ create_target_directory_groups(citra2018_libretro)
 target_link_libraries(citra2018_libretro PRIVATE common core)
 target_link_libraries(citra2018_libretro PRIVATE glad libretro)
 target_link_libraries(citra2018_libretro PRIVATE ${PLATFORM_LIBRARIES} Threads::Threads)
-if(DEFINED LIBRETRO_STATIC)
 target_link_libraries(citra2018_libretro PRIVATE -static-libstdc++)
-endif()
 
 set_target_properties(citra2018_libretro PROPERTIES PREFIX "")
