@@ -20,8 +20,6 @@ add_library(audio_core STATIC
     sink.h
     sink_details.cpp
     sink_details.h
-    time_stretch.cpp
-    time_stretch.h
 
     libretro_sink.cpp
     libretro_sink.h
@@ -30,6 +28,5 @@ add_library(audio_core STATIC
 create_target_directory_groups(audio_core)
 
 target_link_libraries(audio_core PUBLIC common core)
-target_link_libraries(audio_core PRIVATE SoundTouch)
 
 target_link_libraries(audio_core PRIVATE libretro)

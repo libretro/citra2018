@@ -19,22 +19,11 @@ void DspInterface::SetSink(const std::string& sink_id, const std::string& audio_
     sink = sink_details.factory(audio_device);
     sink->SetCallback(
         [this](s16* buffer, std::size_t num_frames) { OutputCallback(buffer, num_frames); });
-    time_stretcher.SetOutputSampleRate(sink->GetNativeSampleRate());
 }
 
 Sink& DspInterface::GetSink() {
     ASSERT(sink);
     return *sink.get();
-}
-
-void DspInterface::EnableStretching(bool enable) {
-    if (perform_time_stretching == enable)
-        return;
-
-    if (!enable) {
-        flushing_time_stretcher = true;
-    }
-    perform_time_stretching = enable;
 }
 
 void DspInterface::OutputFrame(StereoFrame16& frame) {
@@ -47,19 +36,7 @@ void DspInterface::OutputFrame(StereoFrame16& frame) {
 }
 
 void DspInterface::OutputCallback(s16* buffer, std::size_t num_frames) {
-    std::size_t frames_written;
-    if (perform_time_stretching) {
-        const std::vector<s16> in{fifo.Pop()};
-        const std::size_t num_in{in.size() / 2};
-        frames_written = time_stretcher.Process(in.data(), num_in, buffer, num_frames);
-    } else if (flushing_time_stretcher) {
-        time_stretcher.Flush();
-        frames_written = time_stretcher.Process(nullptr, 0, buffer, num_frames);
-        frames_written += fifo.Pop(buffer, num_frames - frames_written);
-        flushing_time_stretcher = false;
-    } else {
-        frames_written = fifo.Pop(buffer, num_frames);
-    }
+    std::size_t frames_written = fifo.Pop(buffer, num_frames);
 
     if (frames_written > 0) {
         std::memcpy(&last_frame[0], buffer + 2 * (frames_written - 1), 2 * sizeof(s16));

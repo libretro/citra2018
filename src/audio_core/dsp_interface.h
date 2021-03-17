@@ -7,7 +7,6 @@
 #include <memory>
 #include <vector>
 #include "audio_core/audio_types.h"
-#include "audio_core/time_stretch.h"
 #include "common/common_types.h"
 #include "common/ring_buffer.h"
 #include "core/memory.h"
@@ -74,8 +73,6 @@ public:
     void SetSink(const std::string& sink_id, const std::string& audio_device);
     /// Get the current sink
     Sink& GetSink();
-    /// Enable/Disable audio stretching.
-    void EnableStretching(bool enable);
 
 protected:
     void OutputFrame(StereoFrame16& frame);
@@ -85,11 +82,8 @@ private:
     void OutputCallback(s16* buffer, std::size_t num_frames);
 
     std::unique_ptr<Sink> sink;
-    std::atomic<bool> perform_time_stretching = false;
-    std::atomic<bool> flushing_time_stretcher = false;
     Common::RingBuffer<s16, 0x2000, 2> fifo;
     std::array<s16, 2> last_frame{};
-    TimeStretcher time_stretcher;
 };
 
 } // namespace AudioCore
