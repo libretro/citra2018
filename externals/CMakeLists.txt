@@ -63,12 +63,6 @@ endif()
 add_subdirectory(enet)
 target_include_directories(enet INTERFACE ./enet/include)
 
-# DiscordRPC
-if (USE_DISCORD_PRESENCE)
-    add_subdirectory(discord-rpc)
-    target_include_directories(discord-rpc INTERFACE ./discord-rpc/include)
-endif()
-
 # LibRetro
 add_library(libretro INTERFACE)
 target_include_directories(libretro INTERFACE ./libretro)

@@ -7,8 +7,6 @@ include(CMakeDependentOption)
 
 project(citra2018)
 
-option(USE_DISCORD_PRESENCE "Enables Discord Rich Presence" OFF)
-
 option(ENABLE_SCRIPTING "Enables scripting support" OFF)
 
 option(DISABLE_CLANG_TARGET "Disables the Clang format check" ON)
