@@ -168,31 +168,31 @@ void UpdateSettings() {
 
     // For our other settings, import them from LibRetro.
     Settings::values.use_cpu_jit =
-        LibRetro::FetchVariable("citra_use_cpu_jit", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_use_cpu_jit", "enabled") == "enabled";
     Settings::values.use_hw_renderer =
-        LibRetro::FetchVariable("citra_use_hw_renderer", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_use_hw_renderer", "enabled") == "enabled";
     Settings::values.use_hw_shader =
-            LibRetro::FetchVariable("citra_use_hw_shaders", "enabled") == "enabled";
+            LibRetro::FetchVariable(CORENAME "_use_hw_shaders", "enabled") == "enabled";
     Settings::values.use_shader_jit =
-        LibRetro::FetchVariable("citra_use_shader_jit", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_use_shader_jit", "enabled") == "enabled";
     Settings::values.shaders_accurate_gs =
-            LibRetro::FetchVariable("citra_use_acc_geo_shaders", "enabled") == "enabled";
+            LibRetro::FetchVariable(CORENAME "_use_acc_geo_shaders", "enabled") == "enabled";
     Settings::values.shaders_accurate_mul =
-            LibRetro::FetchVariable("citra_use_acc_mul", "enabled") == "enabled";
+            LibRetro::FetchVariable(CORENAME "_use_acc_mul", "enabled") == "enabled";
     Settings::values.use_virtual_sd =
-        LibRetro::FetchVariable("citra_use_virtual_sd", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_use_virtual_sd", "enabled") == "enabled";
     Settings::values.is_new_3ds =
-        LibRetro::FetchVariable("citra_is_new_3ds", "Old 3DS") == "New 3DS";
-    Settings::values.swap_screen = LibRetro::FetchVariable("citra_swap_screen", "Top") == "Bottom";
+        LibRetro::FetchVariable(CORENAME "_is_new_3ds", "Old 3DS") == "New 3DS";
+    Settings::values.swap_screen = LibRetro::FetchVariable(CORENAME "_swap_screen", "Top") == "Bottom";
     Settings::values.use_gdbstub =
-        LibRetro::FetchVariable("citra_use_gdbstub", "disabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_use_gdbstub", "disabled") == "enabled";
     LibRetro::settings.mouse_touchscreen =
-        LibRetro::FetchVariable("citra_mouse_touchscreen", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_mouse_touchscreen", "enabled") == "enabled";
     LibRetro::settings.mouse_show_pointer =
-        LibRetro::FetchVariable("citra_mouse_show_pointer", "enabled") == "enabled";
+        LibRetro::FetchVariable(CORENAME "_mouse_show_pointer", "enabled") == "enabled";
 
     // These values are a bit more hard to define, unfortunately.
-    auto scaling = LibRetro::FetchVariable("citra_resolution_factor", "1x (Native)");
+    auto scaling = LibRetro::FetchVariable(CORENAME "_resolution_factor", "1x (Native)");
     auto endOfScale = scaling.find('x'); // All before 'x' in "_x ...", e.g "1x (Native)"
     if (endOfScale == std::string::npos) {
         LOG_ERROR(Frontend, "Failed to parse resolution scale!");
@@ -202,7 +202,7 @@ void UpdateSettings() {
         Settings::values.resolution_factor = scale;
     }
 
-    auto layout = LibRetro::FetchVariable("citra_layout_option", "Default Top-Bottom Screen");
+    auto layout = LibRetro::FetchVariable(CORENAME "_layout_option", "Default Top-Bottom Screen");
 
     if (layout == "Default Top-Bottom Screen") {
         Settings::values.layout_option = Settings::LayoutOption::Default;
@@ -217,11 +217,11 @@ void UpdateSettings() {
         Settings::values.layout_option = Settings::LayoutOption::Default;
     }
 
-    auto deadzone = LibRetro::FetchVariable("citra_deadzone", "15");
+    auto deadzone = LibRetro::FetchVariable(CORENAME "_deadzone", "15");
     LibRetro::settings.deadzone = (float)std::stoi(deadzone) / 100;
 
     auto analog_function =
-        LibRetro::FetchVariable("citra_analog_function", "C-Stick and Touchscreen Pointer");
+        LibRetro::FetchVariable(CORENAME "_analog_function", "C-Stick and Touchscreen Pointer");
 
     if (analog_function == "C-Stick and Touchscreen Pointer") {
         LibRetro::settings.analog_function = LibRetro::CStickFunction::Both;
@@ -234,7 +234,7 @@ void UpdateSettings() {
         LibRetro::settings.analog_function = LibRetro::CStickFunction::Both;
     }
 
-    auto region = LibRetro::FetchVariable("citra_region_value", "Auto");
+    auto region = LibRetro::FetchVariable(CORENAME "_region_value", "Auto");
     std::map<std::string, int> region_values;
     region_values["Auto"] = -1;
     region_values["Japan"] = 0;
@@ -298,7 +298,7 @@ void UpdateSettings() {
     }
 
     // Configure the file storage location
-    auto use_libretro_saves = LibRetro::FetchVariable("citra_use_libretro_save_path",
+    auto use_libretro_saves = LibRetro::FetchVariable(CORENAME "_use_libretro_save_path",
                                                       "LibRetro Default") == "LibRetro Default";
 
     if (use_libretro_saves) {
