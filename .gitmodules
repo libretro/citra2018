@@ -1,6 +1,6 @@
 [submodule "boost"]
     path = externals/boost
-    url = https://github.com/citra-emu/ext-boost.git
+    url = https://github.com/rtiangha/ext-boost.git
 [submodule "nihstro"]
     path = externals/nihstro
     url = https://github.com/neobrain/nihstro.git
@@ -9,7 +9,7 @@
     url = https://github.com/philsquared/Catch.git
 [submodule "dynarmic"]
     path = externals/dynarmic
-    url = https://github.com/MerryMage/dynarmic.git
+    url = https://github.com/warmenhoven/dynarmic.git
 [submodule "xbyak"]
     path = externals/xbyak
     url = https://github.com/herumi/xbyak.git
@@ -27,7 +27,7 @@
     url = https://github.com/benhoyt/inih.git
 [submodule "libressl"]
     path = externals/libressl
-    url = https://github.com/citra-emu/ext-libressl-portable.git
+    url = https://github.com/PabloMK7/ext-libressl-portable.git
 [submodule "externals/libzmq"]
 	path = externals/libzmq
 	url = https://github.com/zeromq/libzmq
